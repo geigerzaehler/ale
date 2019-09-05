@@ -12,7 +12,7 @@ function! ale_linters#rust#rls#GetCommand(buffer) abort
 endfunction
 
 function! ale_linters#rust#rls#GetProjectRoot(buffer) abort
-    let l:cargo_file = ale#path#FindNearestFile(a:buffer, 'Cargo.toml')
+    let l:cargo_file = ale#path#FindTopmostFile(a:buffer, 'Cargo.toml')
 
     return !empty(l:cargo_file) ? fnamemodify(l:cargo_file, ':h') : ''
 endfunction

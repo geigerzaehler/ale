@@ -39,6 +39,22 @@ function! ale#path#FindNearestFile(buffer, filename) abort
     return ''
 endfunction
 
+" Search directories downward from the root to the buffer's file path.
+" Stop at the first (topmost) directory that includes a file `filename`
+" and return the absolute path to that file.
+function! ale#path#FindTopmostFile(buffer, filename) abort
+    let l:buffer_filename = fnamemodify(bufname(a:buffer), ':p')
+    let l:buffer_filename = fnameescape(l:buffer_filename)
+
+    let l:found_files = findfile(a:filename, l:buffer_filename . ';', -1)
+
+    if !empty(l:found_files)
+        return fnamemodify(l:found_files[-1], ':p')
+    endif
+
+    return ''
+endfunction
+
 " Given a buffer and a directory name, find the nearest directory by searching upwards
 " through the paths relative to the given buffer.
 function! ale#path#FindNearestDirectory(buffer, directory_name) abort
